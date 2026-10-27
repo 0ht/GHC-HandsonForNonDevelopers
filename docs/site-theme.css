@@ -65,9 +65,9 @@
 }
 
 .proverb small {
-  display: inline-block;
-  margin-left: 12px;
-  font-size: 12px;
+  display: block;
+  margin-top: 8px;
+  font-size: 13px;
   letter-spacing: .04em;
 }
 
