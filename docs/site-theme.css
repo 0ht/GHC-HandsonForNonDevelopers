@@ -1,0 +1,95 @@
+:root {
+  color-scheme: only light;
+  --cp-bg: #ffffff;
+  --cp-bg-elevated: #f7f8ff;
+  --cp-surface: #ffffff;
+  --cp-surface-soft: #f4f6fb;
+  --cp-border: #dce1ef;
+  --cp-border-strong: #7d879e;
+  --cp-text: #192640;
+  --cp-text-muted: #526078;
+  --cp-text-soft: #657189;
+  --cp-accent: #6441b8;
+  --cp-accent-hover: #513399;
+  --cp-accent-soft: #f2effb;
+  --cp-accent-fg: #ffffff;
+  --cp-success: #167747;
+  --cp-danger: #b42338;
+  --cp-warning: #855b00;
+  --cp-link: #0067b8;
+  --cp-blue: #0078d4;
+  --cp-purple: #7946c9;
+  --cp-cyan: #50c8df;
+  --cp-blue-soft: #edf7ff;
+  --cp-gradient: linear-gradient(115deg, var(--cp-blue), var(--cp-purple));
+  --cp-gradient-hover: linear-gradient(115deg, var(--cp-link), var(--cp-accent-hover));
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand::before {
+  content: "";
+  width: 12px;
+  height: 24px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  background: linear-gradient(160deg, var(--cp-cyan), var(--cp-blue), var(--cp-purple));
+}
+
+.button {
+  border-color: var(--cp-accent);
+  background: var(--cp-gradient);
+}
+
+.button:hover { background: var(--cp-gradient-hover); }
+.button.secondary { background: var(--cp-surface); }
+.button.secondary:hover { background: var(--cp-accent-soft); }
+
+.hero h1 {
+  color: var(--cp-accent);
+  background: var(--cp-gradient);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.proverb {
+  margin: 0 0 24px;
+  color: var(--cp-text-muted);
+  font-size: 19px;
+  letter-spacing: .06em;
+}
+
+.proverb small {
+  display: inline-block;
+  margin-left: 12px;
+  font-size: 12px;
+  letter-spacing: .04em;
+}
+
+.hero > .card,
+.lesson,
+.card.after {
+  border-top: 4px solid var(--cp-blue);
+  background:
+    linear-gradient(var(--cp-surface), var(--cp-surface)) padding-box,
+    linear-gradient(110deg, var(--cp-cyan), var(--cp-blue), var(--cp-purple)) border-box;
+  border-top-color: transparent;
+}
+
+.sample-note,
+.outcomes {
+  background: linear-gradient(120deg, var(--cp-blue-soft), var(--cp-accent-soft));
+}
+
+.sample-result { border-left-color: var(--cp-purple); }
+.steps li::before { color: var(--cp-blue); }
+.number { background: var(--cp-gradient); color: var(--cp-accent-fg); }
+
+@media (forced-colors: active) {
+  .hero h1 { background: none; -webkit-text-fill-color: currentColor; }
+}

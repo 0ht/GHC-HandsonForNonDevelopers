@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="GitHub Copilot 活用100選。日常の仕事から選んで試せる、非開発者のためのハンズオン。10カテゴリ・100件のシナリオ案を、作りたいものから選べます。">
+  <title>GitHub Copilot 活用100選 | カテゴリからシナリオを選ぶ</title>
+  <style>
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 24px; }
+    body { margin: 0; background: var(--cp-bg); color: var(--cp-text); font: 16px/1.85 "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif; }
+    a { color: var(--cp-link); text-underline-offset: 4px; }
+    a:focus-visible, summary:focus-visible { outline: 3px solid var(--cp-accent); outline-offset: 4px; }
+    .wrap { max-width: 1080px; margin: auto; padding: 0 28px; }
+    header { border-bottom: 1px solid var(--cp-border); padding: 20px 0; }
+    .header-inner, .links, .actions, .category-heading { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; }
+    .header-inner, .category-heading { justify-content: space-between; }
+    .brand { color: var(--cp-text); font-weight: 700; text-decoration: none; }
+    .links, .breadcrumb, .small { font-size: 14px; }
+    .breadcrumb { margin: 24px 0 0; color: var(--cp-text-muted); }
+    .hero { padding: 48px 0 32px; }
+    .eyebrow { color: var(--cp-accent); font-size: 13px; font-weight: 700; letter-spacing: .06em; }
+    .hero .eyebrow { font-size: 20px; line-height: 1.65; }
+    h1 { font-size: clamp(32px, 5vw, 52px); line-height: 1.4; letter-spacing: -.025em; margin: 12px 0 24px; white-space: nowrap; }
+    h2 { font-size: 25px; line-height: 1.5; margin: 0 0 12px; }
+    p { margin: 0 0 16px; }
+    .lead { max-width: 720px; font-size: 18px; color: var(--cp-text-muted); }
+    .muted { color: var(--cp-text-muted); }
+    .notice { padding: 16px 20px; border-left: 3px solid var(--cp-accent); background: var(--cp-accent-soft); font-size: 14px; }
+    .notice p { margin: 0; }
+    section { padding: 32px 0; }
+    .category-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; list-style: none; padding: 0; margin: 24px 0 0; }
+    .category-link { display: grid; grid-template-columns: 36px 1fr auto; gap: 12px; align-items: start; height: 100%; padding: 20px; border: 1px solid var(--cp-border); border-radius: 16px; text-decoration: none; color: var(--cp-text); background: var(--cp-surface); }
+    .category-link:hover { border-color: var(--cp-accent); background: var(--cp-bg-elevated); }
+    .category-number { color: var(--cp-blue); font-size: 28px; line-height: 1.2; font-weight: 700; }
+    .category-name { display: block; font-size: 17px; font-weight: 700; }
+    .category-description { display: block; margin-top: 4px; font-size: 13px; color: var(--cp-text-muted); }
+    .category-count { font-size: 13px; color: var(--cp-text-muted); white-space: nowrap; }
+    .category { border-top: 1px solid var(--cp-border); margin-top: 16px; }
+    .category-heading h2 { margin: 0; }
+    .category-heading { margin-bottom: 12px; }
+    .category-heading a { font-size: 13px; }
+    .scenario-list { list-style: none; padding: 0; margin: 24px 0 0; display: grid; gap: 12px; }
+    .scenario { border: 1px solid var(--cp-border); border-radius: 10px; background: var(--cp-surface); overflow: hidden; scroll-margin-top: 24px; }
+    .scenario:target { border-color: var(--cp-accent); }
+    .scenario summary { display: grid; grid-template-columns: 100px 1fr 92px 16px; gap: 16px; align-items: center; padding: 20px; cursor: pointer; list-style: none; }
+    .scenario summary::-webkit-details-marker { display: none; }
+    .scenario summary::after { content: "+"; color: var(--cp-accent); font-size: 22px; text-align: center; }
+    .scenario[open] summary::after { content: "−"; }
+    .scenario summary:hover { background: var(--cp-bg-elevated); }
+    .scenario[open] summary { border-bottom: 1px solid var(--cp-border); background: var(--cp-bg-elevated); }
+    .scenario-code { font-size: 12px; color: var(--cp-text-muted); font-variant-numeric: tabular-nums; }
+    .scenario-title { font-weight: 600; }
+    .scenario-meta { font-size: 13px; color: var(--cp-text-muted); text-align: right; white-space: nowrap; }
+    .scenario-body { padding: 20px; }
+    .scenario-body p:last-child { margin-bottom: 0; }
+    .scenario-body .check { font-size: 14px; color: var(--cp-text-muted); }
+    .badge { display: inline-block; padding: 2px 10px; border: 1px solid var(--cp-border); border-radius: 10px; font-size: 12px; background: var(--cp-surface-soft); color: var(--cp-text-muted); }
+    .badge.ready { background: var(--cp-blue-soft); color: var(--cp-link); }
+    .button { display: inline-block; border: 1px solid var(--cp-accent); border-radius: 10px; padding: 10px 16px; color: var(--cp-accent-fg); text-decoration: none; font-weight: 700; font-size: 14px; }
+    footer { border-top: 1px solid var(--cp-border); padding: 24px 0; margin-top: 32px; font-size: 13px; color: var(--cp-text-muted); }
+    @media (max-width: 700px) {
+      .wrap { padding: 0 20px; }
+      .category-grid { grid-template-columns: 1fr; }
+      .hero { padding-top: 32px; }
+      .scenario summary { grid-template-columns: 1fr 16px; gap: 4px 12px; padding: 16px; }
+      .scenario-code { grid-column: 1; }
+      .scenario-title { grid-column: 1; }
+      .scenario-meta { grid-column: 1; text-align: left; }
+      .scenario summary::after { grid-column: 2; grid-row: 1 / 4; }
+      .category-link { padding: 16px; gap: 8px; }
+    }
+    @media (max-width: 420px) { h1 { font-size: clamp(22px, 7vw, 28px); } }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  </style>
+  <link rel="stylesheet" href="site-theme.css">
+</head>
+<body>
+  <header><div class="wrap header-inner"><a class="brand" href="index.html">GitHub Copilot はじめの一歩</a><nav class="links" aria-label="サイト案内"><a href="#categories">カテゴリから選ぶ</a><a href="index.html#prepare">はじめる前に</a></nav></div></header>
+  <main class="wrap">
+    <p class="breadcrumb"><a href="index.html">ホーム</a> / 活用100選</p>
+    <div class="hero">
+      <p class="eyebrow">日常の仕事から選んで試せる、非開発者のためのハンズオン</p>
+      <h1>GitHub Copilot 活用100選</h1>
+      <p class="lead">会議の後処理、伝わる文章、散らばった資料の整理。<br>10カテゴリ・100のシナリオから、自分の仕事に近いものを探してください。</p>
+      <div class="notice"><p>100件はシナリオ案です。手順・依頼文・配布教材を用意したのは <a href="mt-01.html">MT-01</a> の1件で、残り99件は教材準備前です。所要時間は標準版の目安で、環境の準備時間を含みません。</p></div>
+    </div>
+    <section id="categories" aria-labelledby="categories-title">
+      <h2 id="categories-title">カテゴリから選ぶ</h2>
+      <p class="muted">カテゴリを選び、気になるシナリオ名を開くと、入力と成果物、確認する点が分かります。</p>
+      <nav aria-label="10カテゴリの目次">
+        <ol class="category-grid">
+          <li><a class="category-link" href="#category-mt"><span class="category-number">01</span><span><span class="category-name">会議・打ち合わせ</span><span class="category-description">議事録、タスク抽出、会議後の連絡</span></span><span class="category-count">10本</span></a></li>
+          <li><a class="category-link" href="#category-wr"><span class="category-number">02</span><span><span class="category-name">メール・文章・社内連絡</span><span class="category-description">依頼、返信、読者に合わせた書き換え</span></span><span class="category-count">10本</span></a></li>
+          <li><a class="category-link" href="#category-rd"><span class="category-number">03</span><span><span class="category-name">資料の理解・比較</span><span class="category-description">要約、比較表、根拠付きの回答</span></span><span class="category-count">10本</span></a></li>
+          <li><a class="category-link" href="#category-kn"><span class="category-number">04</span><span><span class="category-name">マニュアル・FAQ・引き継ぎ</span><span class="category-description">手順書、チェックリスト、知識の共有</span></span><span class="category-count">10本</span></a></li>
+          <li><a class="category-link" href="#category-fl"><span class="category-number">05</span><span><span class="category-name">ファイル整理・まとめ作業</span><span class="category-description">目録、分類、複数文書の整理</span></span><span class="category-count">10本</span></a></li>
+          <li><a class="category-link" href="#category-pl"><span class="category-number">06</span><span><span class="category-name">企画・タスク管理・イベント</span><span class="category-description">作業分解、日程、準備の点検</span></span><span class="category-count">10本</span></a></li>
+          <li><a class="category-link" href="#category-sl"><span class="category-number">07</span><span><span class="category-name">営業・提案・マーケティング</span><span class="category-description">商談の整理、提案の骨子、訴求文</span></span><span class="category-count">10本</span></a></li>
+          <li><a class="category-link" href="#category-hr"><span class="category-number">08</span><span><span class="category-name">総務・人事・チーム運営</span><span class="category-description">入社案内、申請、業務分担</span></span><span class="category-count">10本</span></a></li>
+          <li><a class="category-link" href="#category-cs"><span class="category-number">09</span><span><span class="category-name">問い合わせ対応・品質改善</span><span class="category-description">回答案、状況報告、再発防止</span></span><span class="category-count">10本</span></a></li>
+          <li><a class="category-link" href="#category-rp"><span class="category-number">10</span><span><span class="category-name">業務記録・数値・報告</span><span class="category-description">週次報告、数値の照合、進捗の整理</span></span><span class="category-count">10本</span></a></li>
+        </ol>
+      </nav>
+    </section>
+    <section class="category" id="category-mt" aria-labelledby="title-mt">
+      <div class="category-heading"><h2 id="title-mt">01　会議・打ち合わせ</h2><a href="#categories">カテゴリ一覧に戻る</a></div>
+      <p class="muted">会議の前後に必要な準備、記録、連絡を整理します。</p>
+      <ol class="scenario-list">
+        <li><details class="scenario" id="MT-01"><summary><span class="scenario-code">001 · MT-01</span><span class="scenario-title">議事録から、担当・期限付きのタスク一覧を作る <span class="badge ready">教材あり</span></span><span class="scenario-meta">入門 · 20分</span></summary><div class="scenario-body"><p>会議メモ → タスク・担当者・期限・根拠の一覧</p><p class="check">担当者や期限が未記載なら「要確認」とし、決定事項と混同しないようにします。</p><div class="actions"><a class="button" href="mt-01.html">手順と教材を開く</a><span class="small muted">共有文の作成まで試せます。</span></div></div></details></li>
+        <li><details class="scenario" id="MT-02"><summary><span class="scenario-code">002 · MT-02</span><span class="scenario-title">欠席者向けの要約を作る</span><span class="scenario-meta">入門 · 10分</span></summary><div class="scenario-body"><p>会議メモ → 背景・決定事項・影響をまとめた短い共有文</p><p class="check">発言の多さではなく、欠席者に必要な情報を残します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="MT-03"><summary><span class="scenario-code">003 · MT-03</span><span class="scenario-title">時間配分付きの会議アジェンダを作る</span><span class="scenario-meta">入門 · 15分</span></summary><div class="scenario-body"><p>開催目的・相談事項・参加者の役割 → 時間配分付きの進行案</p><p class="check">合計時間を指定枠に収め、会議で決めたいことを明確にします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="MT-04"><summary><span class="scenario-code">004 · MT-04</span><span class="scenario-title">前回と今回の会議を比較する</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>議事メモ2回分 → 継続課題・進展・新規課題の表</p><p class="check">今回の「記載なし」を「解決済み」と扱わないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="MT-05"><summary><span class="scenario-code">005 · MT-05</span><span class="scenario-title">決定事項だけを管理簿にする</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>複数の会議メモ → 決定内容・日付・対象・根拠の一覧</p><p class="check">提案や検討中の事項を、確定した決定として扱わないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="MT-06"><summary><span class="scenario-code">006 · MT-06</span><span class="scenario-title">未決事項から次回の質問を作る</span><span class="scenario-meta">基本 · 15分</span></summary><div class="scenario-body"><p>議事メモ → 次回確認すべき質問と確認先の役割</p><p class="check">元資料にない人物名や回答を補わないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="MT-07"><summary><span class="scenario-code">007 · MT-07</span><span class="scenario-title">会議後の連絡を相手別に作る</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>会議メモ・宛先の役割3種 → 相手別の依頼文3件</p><p class="check">各相手に必要な依頼を入れ、不要な情報を含めないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="MT-08"><summary><span class="scenario-code">008 · MT-08</span><span class="scenario-title">走り書きを読みやすい議事録にする</span><span class="scenario-meta">入門 · 15分</span></summary><div class="scenario-body"><p>重複・略語を含むメモ → 見出し付き議事録</p><p class="check">不明な略語を推測で展開せず、元の意味を保ちます。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="MT-09"><summary><span class="scenario-code">009 · MT-09</span><span class="scenario-title">議題が多すぎる会議を組み直す</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>議題一覧・判断基準・制限時間 → 優先議題と別途確認事項</p><p class="check">議題の省略理由と、別途確認する方法を示します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="MT-10"><summary><span class="scenario-code">010 · MT-10</span><span class="scenario-title">議事録の抜けと矛盾を点検する</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>会議メモ・議事録の下書き → 記載漏れ・矛盾・確認事項の表</p><p class="check">会議メモにない内容を、正しい情報として追加しないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+      </ol>
+    </section>
+    <section class="category" id="category-wr" aria-labelledby="title-wr">
+      <div class="category-heading"><h2 id="title-wr">02　メール・文章・社内連絡</h2><a href="#categories">カテゴリ一覧に戻る</a></div>
+      <p class="muted">伝える内容を変えずに、読み手に合う文面へ整えます。送受信は行いません。</p>
+      <ol class="scenario-list" start="11">
+        <li><details class="scenario" id="WR-01"><summary><span class="scenario-code">011 · WR-01</span><span class="scenario-title">長い依頼文を読みやすくする</span><span class="scenario-meta">入門 · 10分</span></summary><div class="scenario-body"><p>冗長なメール文 → 要点・依頼・期限が分かる文面</p><p class="check">日付、条件、依頼内容を変えずに短くします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="WR-02"><summary><span class="scenario-code">012 · WR-02</span><span class="scenario-title">同じお知らせを相手別に書き分ける</span><span class="scenario-meta">入門 · 15分</span></summary><div class="scenario-body"><p>お知らせ・読者の役割 → 上司向け・同僚向け・社外向けの文面</p><p class="check">語調と説明量を調整し、事実は一致させます。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="WR-03"><summary><span class="scenario-code">013 · WR-03</span><span class="scenario-title">不足情報を確認する返信を書く</span><span class="scenario-meta">入門 · 15分</span></summary><div class="scenario-body"><p>曖昧な依頼文 → 確認質問を含む返信案</p><p class="check">すでに書かれている内容を聞き直さず、質問を絞ります。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="WR-04"><summary><span class="scenario-code">014 · WR-04</span><span class="scenario-title">代案を添えたお断りの文面を作る</span><span class="scenario-meta">入門 · 15分</span></summary><div class="scenario-body"><p>依頼内容・対応できない理由・提示可能な代案 → 返信案</p><p class="check">承認されていない代案や約束を作らないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="WR-05"><summary><span class="scenario-code">015 · WR-05</span><span class="scenario-title">催促の文面を段階別に作る</span><span class="scenario-meta">入門 · 15分</span></summary><div class="scenario-body"><p>未回答の依頼・期限・連絡履歴 → 初回と再確認の文面</p><p class="check">相手を責めず、必要な行動と期限を具体化します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="WR-06"><summary><span class="scenario-code">016 · WR-06</span><span class="scenario-title">社内通知の誤解を招く表現を点検する</span><span class="scenario-meta">基本 · 15分</span></summary><div class="scenario-body"><p>社内通知の下書き → 曖昧な箇所と修正案</p><p class="check">「なるべく」「適宜」などを、根拠なく具体的な条件に変えないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="WR-07"><summary><span class="scenario-code">017 · WR-07</span><span class="scenario-title">専門用語の多い案内をやさしい日本語にする</span><span class="scenario-meta">入門 · 15分</span></summary><div class="scenario-body"><p>専門用語の多い案内 → 初めて読む人向けの説明</p><p class="check">例外条件や注意事項を落とさず、用語を説明します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="WR-08"><summary><span class="scenario-code">018 · WR-08</span><span class="scenario-title">英文メールの要点と返信案を作る</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>架空の英文メール → 日本語の要点と英文の返信案</p><p class="check">日付、時差、数量、依頼の強さを原文と照合します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="WR-09"><summary><span class="scenario-code">019 · WR-09</span><span class="scenario-title">複数の告知文で表現をそろえる</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>同じ施策の告知文3件・表記ルール → 統一した文面</p><p class="check">表記だけをそろえ、対象や適用日の違いを残します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="WR-10"><summary><span class="scenario-code">020 · WR-10</span><span class="scenario-title">提案文を結論・理由・依頼の順に並べ替える</span><span class="scenario-meta">入門 · 10分</span></summary><div class="scenario-body"><p>背景説明の長い提案文 → 結論・理由・依頼の順に整理した文</p><p class="check">賛否や不確実性を元の文章から変えないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+      </ol>
+    </section>
+    <section class="category" id="category-rd" aria-labelledby="title-rd">
+      <div class="category-heading"><h2 id="title-rd">03　資料の理解・比較</h2><a href="#categories">カテゴリ一覧に戻る</a></div>
+      <p class="muted">手元の資料を読み解き、判断に必要な情報と足りない情報を分けます。Web検索は必須ではありません。</p>
+      <ol class="scenario-list" start="21">
+        <li><details class="scenario" id="RD-01"><summary><span class="scenario-code">021 · RD-01</span><span class="scenario-title">複数資料の食い違いを見つける</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>架空の社内ルール・FAQ → 一致点・相違点・要確認事項</p><p class="check">資料間の矛盾を勝手に解決せず、双方の根拠を示します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="RD-02"><summary><span class="scenario-code">022 · RD-02</span><span class="scenario-title">長い説明書の読む場所を案内する</span><span class="scenario-meta">入門 · 15分</span></summary><div class="scenario-body"><p>説明書・利用者の目的 → 読むべき見出しと理由</p><p class="check">存在しない見出しや参照先を作らないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="RD-03"><summary><span class="scenario-code">023 · RD-03</span><span class="scenario-title">業務資料から用語集を作る</span><span class="scenario-meta">入門 · 15分</span></summary><div class="scenario-body"><p>業務説明資料 → 用語・説明・使用例の一覧</p><p class="check">資料由来の定義と、補足説明を区別します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="RD-04"><summary><span class="scenario-code">024 · RD-04</span><span class="scenario-title">施策の新旧を比較し、必要な対応を整理する</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>旧版と新版の案内 → 変更点・影響・必要な対応</p><p class="check">適用日と経過措置を取り違えないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="RD-05"><summary><span class="scenario-code">025 · RD-05</span><span class="scenario-title">3つのサービス候補を同じ軸で比較する</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>架空のサービス紹介3件・比較条件 → 比較表</p><p class="check">記載のない機能や価格を推測で補完しないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="RD-06"><summary><span class="scenario-code">026 · RD-06</span><span class="scenario-title">提案メモの事実・意見・仮説を分ける</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>提案メモ・補足資料 → 事実・意見・仮説・要確認の分類</p><p class="check">書き手が断定していても、資料上の裏付けを確認します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="RD-07"><summary><span class="scenario-code">027 · RD-07</span><span class="scenario-title">読者別に要約の深さを変える</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>同じ業務資料 → 経営層向け5行と担当者向けの詳細版</p><p class="check">短い版でも、制約と不確実性を残します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="RD-08"><summary><span class="scenario-code">028 · RD-08</span><span class="scenario-title">ヒアリング前の質問を用意する</span><span class="scenario-meta">入門 · 15分</span></summary><div class="scenario-body"><p>背景資料・調査目的 → 質問項目と質問の意図</p><p class="check">相手の回答を誘導する聞き方を避けます。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="RD-09"><summary><span class="scenario-code">029 · RD-09</span><span class="scenario-title">稟議の判断に足りない情報を探す</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>稟議の下書き・判断基準 → 不足情報と収集先の役割</p><p class="check">不足と判断した理由を、判断基準に結び付けます。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="RD-10"><summary><span class="scenario-code">030 · RD-10</span><span class="scenario-title">資料への質問に根拠付きで回答する</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>短い資料群・質問5件 → 回答・参照元・回答できない事項</p><p class="check">資料に答えがなければ、その旨を明記します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+      </ol>
+    </section>
+    <section class="category" id="category-kn" aria-labelledby="title-kn">
+      <div class="category-heading"><h2 id="title-kn">04　マニュアル・FAQ・引き継ぎ</h2><a href="#categories">カテゴリ一覧に戻る</a></div>
+      <p class="muted">担当者の知識を、ほかの人が読んで使える文書にまとめます。</p>
+      <ol class="scenario-list" start="31">
+        <li><details class="scenario" id="KN-01"><summary><span class="scenario-code">031 · KN-01</span><span class="scenario-title">作業メモを手順書にする</span><span class="scenario-meta">入門 · 20分</span></summary><div class="scenario-body"><p>担当者のメモ → 前提・手順・完了条件付きの手順書</p><p class="check">メモにない操作は確定手順にせず、確認事項にします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="KN-02"><summary><span class="scenario-code">032 · KN-02</span><span class="scenario-title">問い合わせ記録からFAQを作る</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>架空の質問と承認済み回答 → 分類付きFAQ</p><p class="check">回答のない質問に、新しいルールを作らないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="KN-03"><summary><span class="scenario-code">033 · KN-03</span><span class="scenario-title">手順書からチェックリストを作る</span><span class="scenario-meta">入門 · 15分</span></summary><div class="scenario-body"><p>業務手順書 → 実施前・実施中・完了時の確認表</p><p class="check">必須手順と例外対応を落とさないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="KN-04"><summary><span class="scenario-code">034 · KN-04</span><span class="scenario-title">新任者向けの資料の学習順を作る</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>資料一覧・前提関係 → 学習順と各資料の読む目的</p><p class="check">前提知識が必要な資料を最初に置かないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="KN-05"><summary><span class="scenario-code">035 · KN-05</span><span class="scenario-title">属人化した作業の引き継ぎに足りない情報を探す</span><span class="scenario-meta">入門 · 15分</span></summary><div class="scenario-body"><p>担当者メモ → 引き継ぎに必要な質問一覧</p><p class="check">判断基準、例外、完了条件の抜けを具体的に示します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="KN-06"><summary><span class="scenario-code">036 · KN-06</span><span class="scenario-title">FAQの重複をまとめる</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>似た質問を含むFAQ → 統合案と元項目の対応表</p><p class="check">似ていても、対象や適用条件が違う質問は分けます。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="KN-07"><summary><span class="scenario-code">037 · KN-07</span><span class="scenario-title">ルール変更で手順書とFAQのどこを直すか調べる</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>ルール変更のお知らせ・手順書・FAQ → 修正候補と理由</p><p class="check">影響する箇所を列挙し、未承認の一括変更は行いません。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="KN-08"><summary><span class="scenario-code">038 · KN-08</span><span class="scenario-title">業務資料から理解度確認の問題を作る</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>架空の業務資料 → 5問の問題・解答・根拠</p><p class="check">正解が資料から一意に決まり、解説と矛盾しないことを確認します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="KN-09"><summary><span class="scenario-code">039 · KN-09</span><span class="scenario-title">引き継ぎ資料のひな型を作る</span><span class="scenario-meta">入門 · 15分</span></summary><div class="scenario-body"><p>業務概要・必要項目 → 入力欄付きの引き継ぎテンプレート</p><p class="check">テンプレートと、実際に確定している情報を区別します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="KN-10"><summary><span class="scenario-code">040 · KN-10</span><span class="scenario-title">手順の分岐を判断表にする</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>条件分岐を含む手順書 → 条件・対応・確認先の表</p><p class="check">条件が重なる場合と、どれにも当てはまらない場合を確認します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+      </ol>
+    </section>
+    <section class="category" id="category-fl" aria-labelledby="title-fl">
+      <div class="category-heading"><h2 id="title-fl">05　ファイル整理・まとめ作業</h2><a href="#categories">カテゴリ一覧に戻る</a></div>
+      <p class="muted">複数のファイルを探し、読み、そろえます。演習用の複製だけを対象にし、削除や原本の移動は行いません。</p>
+      <ol class="scenario-list" start="41">
+        <li><details class="scenario" id="FL-01"><summary><span class="scenario-code">041 · FL-01</span><span class="scenario-title">フォルダーの資料目録を作る</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>演習用ファイル5件 → ファイル名・内容・用途の一覧</p><p class="check">実際に読めたファイルと、読めなかったファイルを区別します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="FL-02"><summary><span class="scenario-code">042 · FL-02</span><span class="scenario-title">分かりにくいファイル名の改善案を出す</span><span class="scenario-meta">基本 · 15分</span></summary><div class="scenario-body"><p>曖昧な名前の資料群・命名ルール → 新旧の名前の対応表</p><p class="check">まだ改名せず、重複名や命名規則違反がないか確認します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="FL-03"><summary><span class="scenario-code">043 · FL-03</span><span class="scenario-title">散らばった資料の分類案を作る</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>内容が混在したファイル群 → 分類先と判断理由の一覧</p><p class="check">元ファイルを動かさず、分類不能や複数候補も残します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="FL-04"><summary><span class="scenario-code">044 · FL-04</span><span class="scenario-title">指定ファイルだけを同じ形式で要約する</span><span class="scenario-meta">発展 · 30分</span></summary><div class="scenario-body"><p>資料3件・指定の見出し → 資料ごとの要約ファイル3件</p><p class="check">対象外ファイルを処理せず、入力と出力の対応と件数を確認します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="FL-05"><summary><span class="scenario-code">045 · FL-05</span><span class="scenario-title">複数文書の表記ルール違反を探す</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>文書3件・表記ルール → ファイル別の修正候補一覧</p><p class="check">固有の表現や引用文を不用意に統一しないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="FL-06"><summary><span class="scenario-code">046 · FL-06</span><span class="scenario-title">原本を残して表記だけをそろえる</span><span class="scenario-meta">発展 · 30分</span></summary><div class="scenario-body"><p>文書3件・承認済みの置換表 → 別フォルダーの修正版3件</p><p class="check">指定した表記以外を変えず、原本と出力の差分を確認します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="FL-07"><summary><span class="scenario-code">047 · FL-07</span><span class="scenario-title">複数のメモを出典付きの1文書にまとめる</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>同じテーマのメモ4件 → 出典付きの統合メモ</p><p class="check">重複を減らしても、異なる意見や矛盾は残します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="FL-08"><summary><span class="scenario-code">048 · FL-08</span><span class="scenario-title">資料のテーマ別索引を作る</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>見出し付きの資料群 → テーマ別のファイル・見出し索引</p><p class="check">参照先が存在し、別資料の見出しと混同していないことを確認します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="FL-09"><summary><span class="scenario-code">049 · FL-09</span><span class="scenario-title">日付・版・承認状態で資料一覧を整理する</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>日付・版・承認状態のある資料群 → 状態別の目録</p><p class="check">更新日が新しいだけで「承認済み最新版」と判断しないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="FL-10"><summary><span class="scenario-code">050 · FL-10</span><span class="scenario-title">テンプレートから案内文をまとめて作る</span><span class="scenario-meta">発展 · 30分</span></summary><div class="scenario-body"><p>案内テンプレート・架空の実施条件3件 → 案内ファイル3件</p><p class="check">差し込み漏れ、条件の混線、同名ファイルの上書きを確認します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+      </ol>
+    </section>
+    <section class="category" id="category-pl" aria-labelledby="title-pl">
+      <div class="category-heading"><h2 id="title-pl">06　企画・タスク管理・イベント</h2><a href="#categories">カテゴリ一覧に戻る</a></div>
+      <p class="muted">アイデアを実行できる作業と日程に落とし込みます。外部カレンダーへの登録は行いません。</p>
+      <ol class="scenario-list" start="51">
+        <li><details class="scenario" id="PL-01"><summary><span class="scenario-code">051 · PL-01</span><span class="scenario-title">企画メモを1ページに整理する</span><span class="scenario-meta">入門 · 15分</span></summary><div class="scenario-body"><p>アイデアの走り書き → 目的・対象・内容・効果・未決事項</p><p class="check">期待効果を実績として書かず、仮説と明示します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="PL-02"><summary><span class="scenario-code">052 · PL-02</span><span class="scenario-title">施策の実施までに必要なタスクを分解する</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>小規模施策の概要・期限・体制 → タスク・依存関係・担当役割</p><p class="check">前提タスクの完了前に後続作業を始める計画にしないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="PL-03"><summary><span class="scenario-code">053 · PL-03</span><span class="scenario-title">イベント準備の抜けを探す</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>開催条件・既存の準備リスト → 不足項目と確認質問</p><p class="check">会場、参加案内、当日運営などの条件に結び付けて確認します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="PL-04"><summary><span class="scenario-code">054 · PL-04</span><span class="scenario-title">締め切りから逆算した日程案を作る</span><span class="scenario-meta">発展 · 30分</span></summary><div class="scenario-body"><p>納期・作業日数・営業日カレンダー → 逆算した日程案</p><p class="check">非営業日と依存関係を確認し、日付を検算します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="PL-05"><summary><span class="scenario-code">055 · PL-05</span><span class="scenario-title">イベント当日の進行表を作る</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>イベント概要・担当役割・時間枠 → 時刻入りの進行表</p><p class="check">準備・転換・休憩の時間を含め、時間帯の重複を確認します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="PL-06"><summary><span class="scenario-code">056 · PL-06</span><span class="scenario-title">3つの企画案を判断基準で評価する</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>施策案3件・評価基準 → 比較表と追加確認事項</p><p class="check">評価の根拠と仮定を示し、点数だけで結論を出さないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="PL-07"><summary><span class="scenario-code">057 · PL-07</span><span class="scenario-title">実施計画のリスクと事前対策を整理する</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>実施計画・既知の制約 → リスク・兆候・対策・判断者の表</p><p class="check">発生済みの事実と想定リスクを区別します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="PL-08"><summary><span class="scenario-code">058 · PL-08</span><span class="scenario-title">変更依頼の日程・作業への影響を整理する</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>当初計画・変更依頼 → 日程・作業・確認先への影響</p><p class="check">影響を断定できない箇所は、必要な情報を示します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="PL-09"><summary><span class="scenario-code">059 · PL-09</span><span class="scenario-title">振り返りから次の改善を選ぶ</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>架空の振り返りメモ → 継続・改善・次回試すことの一覧</p><p class="check">感想と事実を分け、改善策に確認指標を付けます。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="PL-10"><summary><span class="scenario-code">060 · PL-10</span><span class="scenario-title">タスクの優先順位を付け直す</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>タスク一覧・期限・重要度の基準 → 実行順と保留理由</p><p class="check">判断基準を明示し、情報不足だけを理由に低優先にしないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+      </ol>
+    </section>
+    <section class="category" id="category-sl" aria-labelledby="title-sl">
+      <div class="category-heading"><h2 id="title-sl">07　営業・提案・マーケティング</h2><a href="#categories">カテゴリ一覧に戻る</a></div>
+      <p class="muted">架空の顧客・製品情報を使い、提案や説明の下書きを作ります。提案や広告の公開は行いません。</p>
+      <ol class="scenario-list" start="61">
+        <li><details class="scenario" id="SL-01"><summary><span class="scenario-code">061 · SL-01</span><span class="scenario-title">商談メモを次の行動に変える</span><span class="scenario-meta">入門 · 20分</span></summary><div class="scenario-body"><p>架空の商談メモ → ニーズ・懸念・未確認事項・次の行動</p><p class="check">顧客の発言と担当者の推測を区別します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="SL-02"><summary><span class="scenario-code">062 · SL-02</span><span class="scenario-title">次回商談の質問を優先順位付きで作る</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>商談履歴・提案目的 → 優先順位付きの質問一覧</p><p class="check">既知の情報を踏まえ、確認したい判断材料を明確にします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="SL-03"><summary><span class="scenario-code">063 · SL-03</span><span class="scenario-title">製品説明を相手の課題中心に書き換える</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>架空の製品説明・対象者の課題 → 課題と機能を結ぶ説明文</p><p class="check">製品にない機能や保証を追加しないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="SL-04"><summary><span class="scenario-code">064 · SL-04</span><span class="scenario-title">顧客要件から提案書の骨子を作る</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>顧客要件・提供可能な内容 → 背景・提案・効果・条件の構成案</p><p class="check">未対応の要件と見積もり前提を隠さないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="SL-05"><summary><span class="scenario-code">065 · SL-05</span><span class="scenario-title">商談でよくある懸念への回答を準備する</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>懸念一覧・承認済みの製品情報 → 回答例と確認先</p><p class="check">契約条件や値引きを独断で約束しないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="SL-06"><summary><span class="scenario-code">066 · SL-06</span><span class="scenario-title">要件と提案の対応漏れを点検する</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>要件一覧・提案の下書き → 対応済み・未対応・要確認の表</p><p class="check">言い回しが似ているだけで対応済みとしないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="SL-07"><summary><span class="scenario-code">067 · SL-07</span><span class="scenario-title">サービスの訴求文を3パターン作る</span><span class="scenario-meta">入門 · 15分</span></summary><div class="scenario-body"><p>架空のサービス情報・読者像・禁止表現 → 訴求文3案</p><p class="check">根拠のない最上級、数値、導入実績を使わないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="SL-08"><summary><span class="scenario-code">068 · SL-08</span><span class="scenario-title">キャンペーンの仮説と検証方法を整理する</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>キャンペーン案・目的・制約 → 仮説・対象・指標・確認方法</p><p class="check">効果を保証せず、測定できる指標を選びます。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="SL-09"><summary><span class="scenario-code">069 · SL-09</span><span class="scenario-title">利用者コメントを期待・不満・改善要望に分ける</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>架空のコメント一覧 → 期待・不満・改善要望と代表的な声</p><p class="check">少数意見を残し、コメント件数と利用者数を混同しないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="SL-10"><summary><span class="scenario-code">070 · SL-10</span><span class="scenario-title">告知文と詳細資料の食い違いを点検する</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>サービス案内・告知の下書き → 不一致と修正候補</p><p class="check">価格、対象、期間、条件を優先して照合します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+      </ol>
+    </section>
+    <section class="category" id="category-hr" aria-labelledby="title-hr">
+      <div class="category-heading"><h2 id="title-hr">08　総務・人事・チーム運営</h2><a href="#categories">カテゴリ一覧に戻る</a></div>
+      <p class="muted">案内や役割分担を整理します。実在する個人の情報、人事評価、採否の決定は扱いません。</p>
+      <ol class="scenario-list" start="71">
+        <li><details class="scenario" id="HR-01"><summary><span class="scenario-code">071 · HR-01</span><span class="scenario-title">入社初日の案内を作る</span><span class="scenario-meta">入門 · 15分</span></summary><div class="scenario-body"><p>架空の受け入れ手順・当日の予定 → 新任者向け案内</p><p class="check">集合時刻、必要な準備、問い合わせ先の役割を確認します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="HR-02"><summary><span class="scenario-code">072 · HR-02</span><span class="scenario-title">入社の受け入れ準備を担当別に分ける</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>入社準備手順 → 本人・上司・総務のチェックリスト</p><p class="check">手順に記載のない担当を確定せず、確認事項にします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="HR-03"><summary><span class="scenario-code">073 · HR-03</span><span class="scenario-title">社内制度の説明を分かりやすくする</span><span class="scenario-meta">入門 · 15分</span></summary><div class="scenario-body"><p>架空の制度案内 → 対象・条件・申請手順・注意点</p><p class="check">例外条件と適用開始日を残します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="HR-04"><summary><span class="scenario-code">074 · HR-04</span><span class="scenario-title">申請案内の必要事項の抜けを点検する</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>架空の申請ルール・案内文 → 必要事項の不足一覧</p><p class="check">提出物、期限、承認経路、問い合わせ先を照合します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="HR-05"><summary><span class="scenario-code">075 · HR-05</span><span class="scenario-title">研修の受講案内と事前準備をまとめる</span><span class="scenario-meta">入門 · 15分</span></summary><div class="scenario-body"><p>研修概要・対象・事前準備 → 案内文と当日の確認事項</p><p class="check">必須・任意、受講条件、申込期限を取り違えないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="HR-06"><summary><span class="scenario-code">076 · HR-06</span><span class="scenario-title">備品の貸し出し記録を点検する</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>架空の貸し出し一覧・管理ルール → 未返却・未記載・要確認の表</p><p class="check">基準日時点で判定し、期限未設定を期限超過と決めつけないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="HR-07"><summary><span class="scenario-code">077 · HR-07</span><span class="scenario-title">社内アンケートの設問を改善する</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>設問案・調査目的 → 修正版と修正理由</p><p class="check">誘導質問や、複数の内容を一度に聞く設問を減らします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="HR-08"><summary><span class="scenario-code">078 · HR-08</span><span class="scenario-title">1対1面談の相談項目を整理する</span><span class="scenario-meta">入門 · 15分</span></summary><div class="scenario-body"><p>架空の本人メモ・面談の目的 → 本人向けの整理メモと相談項目</p><p class="check">性格や能力を推測せず、事実と本人の希望を区別します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="HR-09"><summary><span class="scenario-code">079 · HR-09</span><span class="scenario-title">業務分担の抜けと重複を探す</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>架空の役割表・定例業務一覧 → 未割り当てと重複の候補</p><p class="check">共同担当を誤りと決めつけず、責任範囲を確認します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="HR-10"><summary><span class="scenario-code">080 · HR-10</span><span class="scenario-title">不在時の引き継ぎガイドを作る</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>架空の進行中タスク・連絡ルール → 優先事項と対応ガイド</p><p class="check">期限、代行範囲、本人判断が必要な事項を分けます。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+      </ol>
+    </section>
+    <section class="category" id="category-cs" aria-labelledby="title-cs">
+      <div class="category-heading"><h2 id="title-cs">09　問い合わせ対応・品質改善</h2><a href="#categories">カテゴリ一覧に戻る</a></div>
+      <p class="muted">記録と承認済みの情報に基づき、回答や対策を整理します。顧客への送信や業務上の承認は行いません。</p>
+      <ol class="scenario-list" start="81">
+        <li><details class="scenario" id="CS-01"><summary><span class="scenario-code">081 · CS-01</span><span class="scenario-title">FAQを根拠に問い合わせへの回答案を作る</span><span class="scenario-meta">入門 · 20分</span></summary><div class="scenario-body"><p>架空の問い合わせ・承認済みFAQ → 根拠付きの回答案</p><p class="check">FAQで回答できない部分は確認事項として残します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="CS-02"><summary><span class="scenario-code">082 · CS-02</span><span class="scenario-title">問い合わせを種類別に整理する</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>問い合わせ10件・分類基準 → 分類と判断理由</p><p class="check">複数分類と分類不能の扱いを事前に決めます。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="CS-03"><summary><span class="scenario-code">083 · CS-03</span><span class="scenario-title">問い合わせで追加確認する情報を絞る</span><span class="scenario-meta">入門 · 15分</span></summary><div class="scenario-body"><p>情報不足の問い合わせ・確認項目表 → 追加質問の文面</p><p class="check">不要な個人情報や認証情報を求めないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="CS-04"><summary><span class="scenario-code">084 · CS-04</span><span class="scenario-title">問い合わせを担当部署へ引き継ぐ文面を作る</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>問い合わせ履歴・引き継ぎ基準 → 状況・実施済み対応・依頼</p><p class="check">未実施の対応を、実施済みとして書かないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="CS-05"><summary><span class="scenario-code">085 · CS-05</span><span class="scenario-title">対応履歴を時系列に並べる</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>日付の混在した架空の対応メモ → 時系列表と空白期間</p><p class="check">記載順ではなく日時で整理し、日時不明を推測しないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="CS-06"><summary><span class="scenario-code">086 · CS-06</span><span class="scenario-title">トラブルの事実と原因仮説を分ける</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>架空の事象メモ → 確認済み事実・仮説・調査事項</p><p class="check">相関や推測を、確定した原因として扱わないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="CS-07"><summary><span class="scenario-code">087 · CS-07</span><span class="scenario-title">顧客向けの状況報告を作る</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>確認済みの状況・連絡方針 → 状況説明と次回連絡の案内</p><p class="check">未確定の復旧時刻、原因、補償を約束しないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="CS-08"><summary><span class="scenario-code">088 · CS-08</span><span class="scenario-title">再発防止策を実行・確認できるタスクにする</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>架空の振り返り・承認済み対策案 → 実施項目・担当役割・確認方法</p><p class="check">「注意する」だけで終わらず、対策の完了を確かめられる形にします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="CS-09"><summary><span class="scenario-code">089 · CS-09</span><span class="scenario-title">古い回答テンプレートの更新箇所を探す</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>古いテンプレート・最新の承認済みルール → 更新候補と根拠</p><p class="check">古い連絡先や条件を見つけ、正しい置換情報がなければ要確認にします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="CS-10"><summary><span class="scenario-code">090 · CS-10</span><span class="scenario-title">回答案の正確さと回答漏れを点検する</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>架空の回答案・品質基準 → 項目別の適合状況と修正案</p><p class="check">丁寧さだけでなく、正確性と質問への回答漏れを確認します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+      </ol>
+    </section>
+    <section class="category" id="category-rp" aria-labelledby="title-rp">
+      <div class="category-heading"><h2 id="title-rp">10　業務記録・数値・報告</h2><a href="#categories">カテゴリ一覧に戻る</a></div>
+      <p class="muted">少量の記録や表を使って報告を作ります。計算結果は電卓や手計算で検算し、AIの説明だけで判断しません。</p>
+      <ol class="scenario-list" start="91">
+        <li><details class="scenario" id="RP-01"><summary><span class="scenario-code">091 · RP-01</span><span class="scenario-title">日次メモから週次報告を作る</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>日次メモ3日分 → 進捗・課題・翌週の予定をまとめた報告</p><p class="check">全入力を反映し、同じ作業を重複して数えないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="RP-02"><summary><span class="scenario-code">092 · RP-02</span><span class="scenario-title">報告書と元記録の数字を照合する</span><span class="scenario-meta">発展 · 20分</span></summary><div class="scenario-body"><p>小さな実績表・報告の下書き → 不一致と修正候補</p><p class="check">単位、対象期間、集計対象をそろえて比較します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="RP-03"><summary><span class="scenario-code">093 · RP-03</span><span class="scenario-title">予算と実績の差を整理する</span><span class="scenario-meta">発展 · 20分</span></summary><div class="scenario-body"><p>架空の予算・実績5項目 → 差額と確認すべき項目</p><p class="check">差額の符号、合計、単位を検算し、原因を創作しないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="RP-04"><summary><span class="scenario-code">094 · RP-04</span><span class="scenario-title">前月比の増減を説明する</span><span class="scenario-meta">発展 · 20分</span></summary><div class="scenario-body"><p>2か月分の架空の件数表 → 増減数・増減率・説明文</p><p class="check">分母を前月とし、前月が0の項目は率を算出できないと示します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="RP-05"><summary><span class="scenario-code">095 · RP-05</span><span class="scenario-title">アンケートの自由記述をテーマ別に分類する</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>架空の回答12件 → テーマ別の件数と代表的な意見</p><p class="check">複数分類を許すかを明示し、件数の集計方法を確認します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="RP-06"><summary><span class="scenario-code">096 · RP-06</span><span class="scenario-title">業務記録の空欄・重複・入力ミス候補を探す</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>架空の記録表・入力ルール → 空欄・重複・形式違反の候補</p><p class="check">重複候補を勝手に削除せず、誤りと確定できないものを区別します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="RP-07"><summary><span class="scenario-code">097 · RP-07</span><span class="scenario-title">目標への達成率と進捗を整理する</span><span class="scenario-meta">発展 · 20分</span></summary><div class="scenario-body"><p>架空の目標値・実績値・判定基準 → 達成率と状況の一覧</p><p class="check">「多いほどよい」「少ないほどよい」の指標を取り違えないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="RP-08"><summary><span class="scenario-code">098 · RP-08</span><span class="scenario-title">作業時間の使い方を振り返る</span><span class="scenario-meta">発展 · 30分</span></summary><div class="scenario-body"><p>架空の作業時間記録・分類ルール → 分類別の時間と改善仮説</p><p class="check">時間の単位と重複記録を確認し、個人の能力評価に結び付けないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="RP-09"><summary><span class="scenario-code">099 · RP-09</span><span class="scenario-title">前回からの変更点を中心に進捗報告を作る</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>前回・今回のタスク状態表 → 新規完了・遅延候補・要支援事項</p><p class="check">状態が変わっていない項目と、新しい問題を区別します。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+        <li><details class="scenario" id="RP-10"><summary><span class="scenario-code">100 · RP-10</span><span class="scenario-title">同じ実績を上司向け・担当者向けに報告する</span><span class="scenario-meta">基本 · 20分</span></summary><div class="scenario-body"><p>小さな実績表・確認済みの背景情報 → 上司向け要約と担当者向け詳細</p><p class="check">両方の報告で数値と事実を一致させ、背景のない因果を付け足さないようにします。</p><p><span class="badge">教材準備前</span></p></div></details></li>
+      </ol>
+    </section>
+  </main>
+  <footer><div class="wrap"><p><a href="#categories">カテゴリ一覧に戻る</a> · <a href="index.html">ホームに戻る</a></p>GitHub Copilot App を使う学習用の試作サイトです。教材は架空のデータに限定します。<br>標準版はテキスト・Markdownを使う設計です。Officeアプリや拡張機能は必須ではありません。</div></footer>
+  <script>
+    function openLinkedScenario() {
+      const target = document.getElementById(window.location.hash.slice(1));
+      if (target instanceof HTMLDetailsElement) {
+        target.open = true;
+        target.scrollIntoView({ block: "start" });
+      }
+    }
+    window.addEventListener("hashchange", openLinkedScenario);
+    openLinkedScenario();
+  </script>
+</body>
+</html>
