@@ -2,7 +2,7 @@
 
 > 本リポジトリは学習・検証用とする。演習には架空のデータを使用し、実際の業務データや本番環境は扱わない。
 
-[参加者向けサイト「GitHub Copilot 活用100選」](https://0ht.github.io/GHC-handson/)
+[参加者向けサイト「GitHub Copilot 活用100選」](https://0ht.github.io/GHC-HandsonForNonDevelopers/)
 
 プログラミング経験のない業務担当者が、GitHub Copilot App を使って日常業務を効率化するためのハンズオン設計資料をまとめる。「依頼する → 作業を進める → 根拠と成果物を確認する → 改善する」を学ぶ。
 
